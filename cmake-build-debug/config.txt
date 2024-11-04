@@ -7,13 +7,11 @@ input_file=matrix_6x6.atsp
 # Rozmiar instancji
 instance_size=8
 # Czy wyswietlic macierz (0 - nie, 1 - tak)
-display_matrix=0
+display_matrix=1
 # Liczba iteracji
-iterations=100
-# Procent wykonanych iteracji dla algorytmu losowego
-random_iterations=15
-# Algorytm do uruchomienia (brute_force, nearest_neighbor, random)
-algorithm=random
+iterations=1
+# Algorytm do uruchomienia (BranchAndBoundDFS, BranchAndBoundBFS, BranchAndBoundBestFirstSearch)
+algorithm=BranchAndBoundDFS
 # Nazwa pliku wyjsciowego
 output_file=result.csv
 # Wlaczenie paska postepu (0 - nie, 1 - tak)

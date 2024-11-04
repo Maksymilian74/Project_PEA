@@ -25,7 +25,6 @@ private:
     int instanceSize;  // Zmienna przechowujaca rozmiar instancji macierzy
     bool displayMatrix;   // Zmienna przechowujaca informacje czy wyswietlac macierz
     int iterations;  // Zmienna przechowujaca liczbe iteracji
-    int randomIterations;  // Zmienna przechowujaca liczbe iteracji dla algorytmu losowego
     string algorithm;  // Zmienna przechowujaca nazwe wybranego algorytmu do uruchomienia
     string outputFile;  // Zmienna przechowujaca nazwe pliku wyjsciowego
     bool progress;  // Zmienna przechowujaca informacje czy wyswietlac pasek postepu

@@ -20,7 +20,6 @@ Menu::Menu() {
     iterations = 0;
     algorithm = "";
     outputFile = "";
-    randomIterations = 0;
     progress = false;
     showResults = 0;
     timer = 0;
@@ -72,19 +71,19 @@ void Menu::run() {
         int minCost = 0;
 
         // Uruchomienie wybranego algorytmu na podstawie parametru algorithm
-        if (algorithm == "brute_force") {
+        if (algorithm == "BranchAndBoundDFS") {
             start = high_resolution_clock::now();
-            //minCost = algorithms.bruteForce(*matrix, bestPath);
+            //minCost = algorithms.branchAndBoundBFS(*matrix, bestPath);
             stop = high_resolution_clock::now();
 
-        } else if (algorithm == "nearest_neighbor") {
+        } else if (algorithm == "BranchAndBoundBFS") {
             start = high_resolution_clock::now();
-            //minCost = algorithms.nearestNeighbor(*matrix, bestPath);
+            //minCost = algorithms.branchAndBoundDFS(*matrix, bestPath);
             stop = high_resolution_clock::now();
 
-        } else if (algorithm == "random") {
+        } else if (algorithm == "BranchAndBoundBestFirstSearch") {
             start = high_resolution_clock::now();
-            //minCost = algorithms.randomAlgorithm(*matrix, bestPath, randomIterations);
+            //minCost = algorithms.branchAndBoundBestFirstSearch(*matrix, bestPath);
             stop = high_resolution_clock::now();
 
         } else {
@@ -157,21 +156,17 @@ void Menu::loadConfig(const string& configFile) {
             case 4:
                 iterations = stoi(value);
                 break;
-            case 5:
-                if (!value.empty()) {
-                    randomIterations = stoi(value);
-                }
                 break;
-            case 6:
+            case 5:
                 algorithm = value;
                 break;
-            case 7:
+            case 6:
                 outputFile = value;
                 break;
-            case 8:
+            case 7:
                 progress = (value == "1");
                 break;
-            case 9:
+            case 8:
                 showResults = (value == "1");
                 break;
         }
