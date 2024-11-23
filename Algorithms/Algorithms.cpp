@@ -5,8 +5,8 @@
 
 using namespace std;
 
-// Metoda branch and bound BFS
-int Algorithms::branchAndBoundBFS(const Matrix &matrix, vector<int> &bestPath) {
+// Metoda branch and bound BFS dla macierzy asymetrycznej
+int Algorithms::AsymmetricBranchAndBoundBFS(const Matrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
     int minCost = std::numeric_limits<int>::max();
     bestPath.clear();
@@ -63,8 +63,8 @@ int Algorithms::branchAndBoundBFS(const Matrix &matrix, vector<int> &bestPath) {
     return minCost;
 }
 
-// Metoda branch and bound DFS
-int Algorithms::branchAndBoundDFS(const Matrix &matrix, vector<int> &bestPath) {
+// Metoda branch and bound DFS dla macierzy asymetrycznej
+int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
     int minCost = numeric_limits<int>::max();
     bestPath.clear();
@@ -119,8 +119,8 @@ int Algorithms::branchAndBoundDFS(const Matrix &matrix, vector<int> &bestPath) {
     return minCost;
 }
 
-// Metoda branch and bound best first search
-int Algorithms::branchAndBoundBestFirstSearch(const Matrix &matrix, vector<int> &bestPath) {
+// Metoda branch and bound best first search dla macierzy asymetrycznej
+int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
     int minCost = std::numeric_limits<int>::max();
     bestPath.clear();
@@ -176,6 +176,18 @@ int Algorithms::branchAndBoundBestFirstSearch(const Matrix &matrix, vector<int> 
     }
 
     return minCost;
+}
+
+// Metoda branch and bound BFS dla macierzy symetrycznej
+int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector<int> &bestPath) {
+}
+
+// Metoda branch and bound DFS dla macierzy symetrycznej
+int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector<int> &bestPath) {
+}
+
+// Metoda branch and bound best first search dla macierzy symetrycznej
+int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &matrix, vector<int> &bestPath) {
 }
 
 // Funkcja do obliczania dolnej granicy

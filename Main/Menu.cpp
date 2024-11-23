@@ -93,26 +93,41 @@ void Menu::run() {
         if (!symmetricProblem) { // Algorytmy dla problemu asymetrycznego
             if (algorithm == "BranchAndBoundBFS") {
                 start = high_resolution_clock::now();
-                minCost = algorithms.branchAndBoundBFS(*asymmetricMatrix, bestPath);
+                minCost = algorithms.AsymmetricBranchAndBoundBFS(*asymmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
 
             } else if (algorithm == "BranchAndBoundDFS") {
                 start = high_resolution_clock::now();
-                minCost = algorithms.branchAndBoundDFS(*asymmetricMatrix, bestPath);
+                minCost = algorithms.AsymmetricBranchAndBoundDFS(*asymmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
 
             } else if (algorithm == "BranchAndBoundBestFirstSearch") {
                 start = high_resolution_clock::now();
-                minCost = algorithms.branchAndBoundBestFirstSearch(*asymmetricMatrix, bestPath);
+                minCost = algorithms.AsymmetricBranchAndBoundBestFirstSearch(*asymmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
-
             } else {
                 cerr << "Blad: Nieznany algorytm dla problemu asymetrycznego!" << endl;
                 return;
             }
-        } else {
-            cout<<"wejscie do algorytmow"<<endl;
-            return;
+        } else { // Algorytmy dla problemu symetrycznego
+            if (algorithm == "BranchAndBoundBFS") {
+                start = high_resolution_clock::now();
+                //minCost = algorithms.SymmetricBranchAndBoundBFS(*symmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
+
+            } else if (algorithm == "BranchAndBoundDFS") {
+                start = high_resolution_clock::now();
+                //minCost = algorithms.SymmetricBranchAndBoundDFS(*symmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
+
+            } else if (algorithm == "BranchAndBoundBestFirstSearch") {
+                start = high_resolution_clock::now();
+                //minCost = algorithms.SymmetricBranchAndBoundBestFirstSearch(*symmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
+            } else {
+                cerr << "Blad: Nieznany algorytm dla problemu symetrycznego!" << endl;
+                return;
+            }
         }
 
         timer += duration_cast<duration<double, milli>>(stop - start).count();
