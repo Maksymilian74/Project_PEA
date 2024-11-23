@@ -36,8 +36,11 @@ public:
     // Metoda branch and bound best first search dla macierzy symetrycznej
     int SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix& matrix, vector<int>& bestPath);
 private:
-    // Metoda odpowiedzialna za obliczanie granic
-    int calculateBound(const Matrix& matrix, const Node& node);
+    // Metoda odpowiedzialna za obliczanie granic dla macierzy asymetrycznej
+    int AsymmetricCalculateBound(const Matrix& matrix, const Node& node);
+
+    // Metoda odpowiedzialna za obliczanie granic dla macierzy symetrycznej
+    int SymmetricCalculateBound(const SymmetricMatrix& matrix, const Node& node);
 };
 
 

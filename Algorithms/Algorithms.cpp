@@ -16,7 +16,7 @@ int Algorithms::AsymmetricBranchAndBoundBFS(const Matrix &matrix, vector<int> &b
     Node* root = new Node(n);
     root->path.push_back(0);
     root->visited[0] = true;
-    root->bound = calculateBound(matrix, *root);
+    root->bound = AsymmetricCalculateBound(matrix, *root);
     queue.enqueue(root);
 
     while (!queue.isEmpty()) {
@@ -45,7 +45,7 @@ int Algorithms::AsymmetricBranchAndBoundBFS(const Matrix &matrix, vector<int> &b
                         std::copy(currentNode->visited, currentNode->visited + n, child->visited);
                         child->visited[i] = true;
 
-                        child->bound = calculateBound(matrix, *child);
+                        child->bound = AsymmetricCalculateBound(matrix, *child);
 
                         if (child->bound < minCost) {
                             queue.enqueue(child);
@@ -75,7 +75,7 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
     Node* root = new Node(n);
     root->path.push_back(0);
     root->visited[0] = true;
-    root->bound = calculateBound(matrix, *root);
+    root->bound = AsymmetricCalculateBound(matrix, *root);
     stack.push(root);
     while (!stack.isEmpty()) {
         Node* currentNode = stack.pop();
@@ -102,7 +102,7 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
                     copy(currentNode->visited, currentNode->visited + n, child->visited);
                     child->visited[i] = true;
 
-                    child->bound = calculateBound(matrix, *child);
+                    child->bound = AsymmetricCalculateBound(matrix, *child);
 
                     // Dodanie dziecka do stosu tylko, jesli jego granica jest lepsza
                     if (child->bound < minCost) {
@@ -131,7 +131,7 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
     Node* root = new Node(n);
     root->path.push_back(0);
     root->visited[0] = true;
-    root->bound = calculateBound(matrix, *root);
+    root->bound = AsymmetricCalculateBound(matrix, *root);
     queue.enqueue(root);
 
     while (!queue.isEmpty()) {
@@ -160,7 +160,7 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
                         std::copy(currentNode->visited, currentNode->visited + n, child->visited);
                         child->visited[i] = true;
 
-                        child->bound = calculateBound(matrix, *child);
+                        child->bound = AsymmetricCalculateBound(matrix, *child);
 
                         if (child->bound < minCost) {
                             queue.enqueue(child);
@@ -180,6 +180,63 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
 
 // Metoda branch and bound BFS dla macierzy symetrycznej
 int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector<int> &bestPath) {
+    int n = matrix.getSize();
+    int minCost = std::numeric_limits<int>::max(); // Minimalny koszt znalezionego rozwiązania
+    bestPath.clear(); // Wyczyszczenie ścieżki
+
+    Queue queue; // Własnoręcznie zaimplementowany stos
+
+    // Inicjalizacja pierwszego węzła
+    Node* root = new Node(n);
+    root->path.push_back(0); // Startujemy od miasta 0
+    root->visited[0] = true;
+    root->bound = SymmetricCalculateBound(matrix, *root); // Wyliczenie dolnej granicy
+    queue.enqueue(root); // Dodanie korzenia do kolejki
+
+    while (!queue.isEmpty()) {
+        Node* currentNode = queue.dequeue();
+
+        // Sprawdzenie, czy granica jest lepsza od najlepszego znalezionego rozwiązania
+        if (currentNode->bound < minCost) {
+            if (currentNode->level == n - 1) { // Jeśli osiągnęliśmy ostatni poziom
+                int lastCity = currentNode->path.back();
+                int returnCost = matrix.getCost(lastCity, 0); // Koszt powrotu do miasta startowego
+                if (returnCost != -1) {
+                    int totalCost = currentNode->cost + returnCost;
+                    if (totalCost < minCost) { // Jeśli znaleziono lepsze rozwiązanie
+                        minCost = totalCost;
+                        bestPath = currentNode->path;
+                        bestPath.push_back(0); // Dodanie powrotu do miasta startowego
+                    }
+                }
+            } else { // Generowanie dzieci
+                for (int i = 0; i < n; ++i) {
+                    if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
+                        Node* child = new Node(n);
+                        child->level = currentNode->level + 1;
+                        child->cost = currentNode->cost + matrix.getCost(currentNode->path.back(), i);
+                        child->path = currentNode->path;
+                        child->path.push_back(i);
+                        copy(currentNode->visited, currentNode->visited + n, child->visited);
+                        child->visited[i] = true;
+
+                        // Wyliczanie dolnej granicy dla dziecka
+                        child->bound = SymmetricCalculateBound(matrix, *child);
+
+                        // Dodanie dziecka do kolejki, jeśli jego granica jest lepsza
+                        if (child->bound < minCost) {
+                            queue.enqueue(child);
+                        } else {
+                            delete child; // Jeśli granica jest gorsza, usuwamy węzeł
+                        }
+                    }
+                }
+            }
+        }
+        delete currentNode; // Usunięcie przetworzonego węzła
+    }
+
+    return minCost;
 }
 
 // Metoda branch and bound DFS dla macierzy symetrycznej
@@ -191,7 +248,7 @@ int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &ma
 }
 
 // Funkcja do obliczania dolnej granicy
-int Algorithms::calculateBound(const Matrix& matrix, const Node& node) {
+int Algorithms::AsymmetricCalculateBound(const Matrix& matrix, const Node& node) {
     int n = matrix.getSize();
     int lowerBound = node.cost;
 
@@ -221,18 +278,25 @@ int Algorithms::calculateBound(const Matrix& matrix, const Node& node) {
     return lowerBound/2;
 }
 
-//    for (int i = 0; i < n; ++i) {
-//        if (!node.visited[i]) {
-//            int minCost = numeric_limits<int>::max();
-//            for (int j = 0; j < n; ++j) {
-//                if (i != j && !node.visited[j]) {
-//                    int cost = matrix.getCost(i, j);
-//                    if (cost < minCost) {
-//                        minCost = cost;
-//                    }
-//                }
-//            }
-//            lowerBound += (minCost == numeric_limits<int>::max() ? 0 : minCost);
-//        }
-//    }
-//    return lowerBound;
+// Funkcja do obliczania dolnej granicy
+int Algorithms::SymmetricCalculateBound(const SymmetricMatrix& matrix, const Node& node) {
+    int n = matrix.getSize();
+    int lowerBound = node.cost;
+
+    for (int i = 0; i < n; ++i) {
+        if (!node.visited[i]) {
+            int minCost = std::numeric_limits<int>::max();
+            for (int j = 0; j < n; ++j) {
+                if (i != j && !node.visited[j]) {
+                    int cost = matrix.getCost(i, j);
+                    if (cost < minCost) {
+                        minCost = cost;
+                    }
+                }
+            }
+            lowerBound += (minCost == std::numeric_limits<int>::max() ? 0 : minCost);
+        }
+    }
+
+    return lowerBound;
+}

@@ -112,7 +112,7 @@ void Menu::run() {
         } else { // Algorytmy dla problemu symetrycznego
             if (algorithm == "BranchAndBoundBFS") {
                 start = high_resolution_clock::now();
-                //minCost = algorithms.SymmetricBranchAndBoundBFS(*symmetricMatrix, bestPath);
+                minCost = algorithms.SymmetricBranchAndBoundBFS(*symmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
 
             } else if (algorithm == "BranchAndBoundDFS") {
