@@ -14,6 +14,10 @@ add_executable(Projekt_PEA_2
         Utils/ReadFile.cpp
         Utils/ReadFile.h
         Utils/GenerateMatrix.cpp
-        Utils/GenerateMatrix.h)
+        Utils/GenerateMatrix.h
+        Structures/Node.cpp
+        Structures/Node.h
+        Structures/Stack.cpp
+        Structures/Stack.h)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static")

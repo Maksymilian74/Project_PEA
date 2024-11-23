@@ -2,6 +2,7 @@
 #define PROJEKT_PEA_2_ALGORITHMS_H
 
 #include "../Structures/Matrix.h"
+#include "../Structures/Node.h"
 #include <vector>
 
 using namespace std;
@@ -16,6 +17,9 @@ public:
 
     // Metoda branch and bound best first search
     int branchAndBoundBestFirstSearch(const Matrix& matrix, vector<int>& bestPath);
+private:
+    // Metoda odpowiedzialna za obliczanie granic
+    int calculateBound(const Matrix& matrix, const Node& node);
 };
 
 
