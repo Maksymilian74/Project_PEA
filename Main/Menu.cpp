@@ -117,12 +117,12 @@ void Menu::run() {
 
             } else if (algorithm == "BranchAndBoundDFS") {
                 start = high_resolution_clock::now();
-                //minCost = algorithms.SymmetricBranchAndBoundDFS(*symmetricMatrix, bestPath);
+                minCost = algorithms.SymmetricBranchAndBoundDFS(*symmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
 
             } else if (algorithm == "BranchAndBoundBestFirstSearch") {
                 start = high_resolution_clock::now();
-                //minCost = algorithms.SymmetricBranchAndBoundBestFirstSearch(*symmetricMatrix, bestPath);
+                minCost = algorithms.SymmetricBranchAndBoundBestFirstSearch(*symmetricMatrix, bestPath);
                 stop = high_resolution_clock::now();
             } else {
                 cerr << "Blad: Nieznany algorytm dla problemu symetrycznego!" << endl;
