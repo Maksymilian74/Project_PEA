@@ -4,8 +4,10 @@
 generate_data=0
 # Nazwa pliku wejsciowego
 input_file=matrix_6x6.atsp
+# Czy problem jest symetryczny (0 - nie, 1 - tak)
+symmetric_problem=1
 # Rozmiar instancji
-instance_size=6
+instance_size=10
 # Czy wyswietlic macierz (0 - nie, 1 - tak)
 display_matrix=1
 # Liczba iteracji

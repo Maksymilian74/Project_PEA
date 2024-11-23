@@ -1,6 +1,8 @@
 #include "PriorityQueue.h"
 #include <stdexcept>
 
+using namespace std;
+
 // Konstruktor wezla kolejki priorytetowej
 PriorityQueue::PriorityQueueNode::PriorityQueueNode(Node* node) : data(node), next(nullptr) {}
 
@@ -22,7 +24,7 @@ PriorityQueue::~PriorityQueue() {
 // Metoda dodajaca element do kolejki w odpowiednim miejscu
 void PriorityQueue::enqueue(Node* node) {
     if (!node) {
-        throw std::invalid_argument("Null pointer cannot be enqueued");
+        throw invalid_argument("Null pointer cannot be enqueued");
     }
 
     PriorityQueueNode* newNode = new PriorityQueueNode(node);
@@ -47,7 +49,7 @@ void PriorityQueue::enqueue(Node* node) {
 // Metoda usuwajaca element o najnizszym koszcie
 Node* PriorityQueue::dequeue() {
     if (isEmpty()) {
-        throw std::out_of_range("Attempted to dequeue from an empty priority queue");
+        throw out_of_range("Attempted to dequeue from an empty priority queue");
     }
     PriorityQueueNode* temp = head;
     Node* node = temp->data;

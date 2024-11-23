@@ -1,6 +1,8 @@
 #include "Queue.h"
 #include <stdexcept>
 
+using namespace std;
+
 // Konstruktor wewnetrznego wezla kolejki
 Queue::QueueNode::QueueNode(Node* node) : data(node), next(nullptr) {}
 
@@ -22,7 +24,7 @@ Queue::~Queue() {
 // Metoda odpowiedzialna za dodanie wezla do kolejki
 void Queue::enqueue(Node* node) {
     if (!node) {
-        throw std::invalid_argument("Null pointer cannot be enqueued");
+        throw invalid_argument("Null pointer cannot be enqueued");
     }
     QueueNode* newNode = new QueueNode(node);
     if (rear) {
@@ -38,7 +40,7 @@ void Queue::enqueue(Node* node) {
 // Metoda odpowiedzialna za usuniecie wezla z kolejki
 Node* Queue::dequeue() {
     if (isEmpty()) {
-        throw std::out_of_range("Attempted to dequeue from an empty queue");
+        throw out_of_range("Attempted to dequeue from an empty queue");
     }
     QueueNode* temp = front;
     Node* node = temp->data;

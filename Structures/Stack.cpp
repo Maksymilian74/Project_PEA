@@ -1,6 +1,8 @@
 #include "Stack.h"
 #include <stdexcept>
 
+using namespace std;
+
 // Implementacja wezla stosu
 Stack::StackNode::StackNode(Node* node) : data(node), next(nullptr) {}
 
@@ -22,7 +24,7 @@ Stack::~Stack() {
 // Dodanie elementu na stos
 void Stack::push(Node* node) {
     if (!node) {
-        throw std::invalid_argument("Null pointer cannot be pushed onto the stack");
+        throw invalid_argument("Null pointer cannot be pushed onto the stack");
     }
     StackNode* newNode = new StackNode(node);
     newNode->next = top;
@@ -33,7 +35,7 @@ void Stack::push(Node* node) {
 // Usuniecie elementu ze stosu
 Node* Stack::pop() {
     if (isEmpty()) {
-        throw std::out_of_range("Attempted to pop from an empty stack");
+        throw out_of_range("Attempted to pop from an empty stack");
     }
     StackNode* temp = top;
     Node* node = temp->data;
@@ -46,7 +48,7 @@ Node* Stack::pop() {
 // Sprawdzenie szczytu stosu
 Node* Stack::peek() const {
     if (isEmpty()) {
-        throw std::out_of_range("Stos jest pusty");
+        throw out_of_range("Stos jest pusty");
     }
     return top->data;
 }

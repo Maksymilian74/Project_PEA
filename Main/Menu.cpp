@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "../Structures/Matrix.h"
+#include "../Structures/SymmetricMatrix.h"
 #include "../Utils/ReadFile.h"
 #include "../Utils/GenerateMatrix.h"
 #include "../Algorithms/Algorithms.h"
@@ -15,6 +16,7 @@ using namespace std::chrono;
 Menu::Menu() {
     generateData = false;
     inputFile = "";
+    symmetricProblem = 0;
     instanceSize = 0;
     displayMatrix = false;
     iterations = 0;
@@ -31,7 +33,8 @@ void Menu::run() {
 
     srand(time(nullptr));  // Inicjalizacja generatora liczb losowych
 
-    Matrix* matrix = nullptr;  // Wskaznik do dynamicznie alokowanej macierzy
+    Matrix* asymmetricMatrix = nullptr;  // Wskaznik do dynamicznie alokowanej macierzy asymetrycznej
+    SymmetricMatrix* symmetricMatrix = nullptr; // Wskaznik do macierzy symetrycznej
 
     if (!generateData) {
         ReadFile fileReader;
@@ -39,16 +42,24 @@ void Menu::run() {
         try {
             // Wczytywanie rozmiaru macierzy z pliku
             fileMatrixSize = fileReader.getMatrixSize(inputFile);
-            matrix = new Matrix(fileMatrixSize);
-
-            fileReader.loadData(inputFile, *matrix);  // Wczytanie danych do macierzy z pliku
+            if (symmetricProblem) {
+                symmetricMatrix = new SymmetricMatrix(fileMatrixSize);
+                fileReader.loadDataSymmetric(inputFile, *symmetricMatrix); // Wczytanie danych do macierzy symetrycznej
+            } else {
+                asymmetricMatrix = new Matrix(fileMatrixSize);
+                fileReader.loadDataAsymmetric(inputFile, *asymmetricMatrix); // Wczytanie danych do macierzy asymetrycznej
+            }
         } catch (const runtime_error& e) {
             cerr << e.what() << endl;
             return;
         }
     }  else {
         // Tworzenie macierzy na podstawie rozmiaru z konfiguracji
-        matrix = new Matrix(instanceSize);
+            if (symmetricProblem) {
+                symmetricMatrix = new SymmetricMatrix(instanceSize);
+            } else {
+                asymmetricMatrix = new Matrix(instanceSize);
+            }
     }
 
     GenerateMatrix generator;  // Tworzenie obiektu generatora losowych danych
@@ -60,34 +71,47 @@ void Menu::run() {
 
         // Wypelnienie macierzy losowymi danymi dla kazdej iteracji
         if (generateData) {
-            generator.fillRandom(*matrix);
+            if (symmetricProblem) {
+                generator.fillRandomSymmetricMatrix(*symmetricMatrix);
+            } else {
+                generator.fillRandomAsymmetricMatrix(*asymmetricMatrix);
+            }
         }
 
         // Wyswietlanie macierzy
         if (displayMatrix) {
-            matrix->display();
+            if (symmetricProblem) {
+                symmetricMatrix->display();
+            } else {
+                asymmetricMatrix->display();
+            }
         }
         vector<int> bestPath;
         int minCost = 0;
 
-        // Uruchomienie wybranego algorytmu na podstawie parametru algorithm
-        if (algorithm == "BranchAndBoundBFS") {
-            start = high_resolution_clock::now();
-            minCost = algorithms.branchAndBoundBFS(*matrix, bestPath);
-            stop = high_resolution_clock::now();
+        // Uruchomienie wybranego algorytmu
+        if (!symmetricProblem) { // Algorytmy dla problemu asymetrycznego
+            if (algorithm == "BranchAndBoundBFS") {
+                start = high_resolution_clock::now();
+                minCost = algorithms.branchAndBoundBFS(*asymmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
 
-        } else if (algorithm == "BranchAndBoundDFS") {
-            start = high_resolution_clock::now();
-            minCost = algorithms.branchAndBoundDFS(*matrix, bestPath);
-            stop = high_resolution_clock::now();
+            } else if (algorithm == "BranchAndBoundDFS") {
+                start = high_resolution_clock::now();
+                minCost = algorithms.branchAndBoundDFS(*asymmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
 
-        } else if (algorithm == "BranchAndBoundBestFirstSearch") {
-            start = high_resolution_clock::now();
-            minCost = algorithms.branchAndBoundBestFirstSearch(*matrix, bestPath);
-            stop = high_resolution_clock::now();
+            } else if (algorithm == "BranchAndBoundBestFirstSearch") {
+                start = high_resolution_clock::now();
+                minCost = algorithms.branchAndBoundBestFirstSearch(*asymmetricMatrix, bestPath);
+                stop = high_resolution_clock::now();
 
+            } else {
+                cerr << "Blad: Nieznany algorytm dla problemu asymetrycznego!" << endl;
+                return;
+            }
         } else {
-            cerr << "Blad: Nieznany algorytm!" << endl;
+            cout<<"wejscie do algorytmow"<<endl;
             return;
         }
 
@@ -111,11 +135,25 @@ void Menu::run() {
     }
 
     // Zapis wynikow do pliku CSV
-    saveResultsToCSV(algorithm, matrix->getSize(), timer / iterations);
+    if (symmetricProblem) {
+        saveResultsToCSV(algorithm + "_Symmetric", symmetricMatrix->getSize(), timer / iterations);
+    } else {
+        saveResultsToCSV(algorithm + "_Asymmetric", asymmetricMatrix->getSize(), timer / iterations);
+    }
 
-    cout << endl << "Algorytm " << algorithm << ", dla macierzy o rozmiarze: " << matrix->getSize() << ", sredni czas: " << timer / iterations << " ms\n";
+    cout << endl << "Algorytm " << algorithm;
 
-    delete matrix;  // Usuniecie dynamicznie alokowanej macierzy
+    if (symmetricProblem) {
+        cout << " (Symmetric)";
+        cout << ", dla macierzy o rozmiarze: " << symmetricMatrix->getSize();
+    } else {
+        cout << " (Asymmetric)";
+        cout << ", dla macierzy o rozmiarze: " << asymmetricMatrix->getSize();
+    }
+    cout << ", sredni czas: " << timer / iterations << " ms" << endl;
+
+    delete asymmetricMatrix;
+    delete symmetricMatrix;
 }
 
 // Metoda odpowiedzialna za wczytywanie konfiguracji z pliku konfiguracyjnego
@@ -147,33 +185,36 @@ void Menu::loadConfig(const string& configFile) {
                 break;
             case 2:
                 if (!value.empty()) {
-                    instanceSize = stoi(value);
+                symmetricProblem = (value == "1");
                 }
                 break;
             case 3:
-                displayMatrix = (value == "1");
+                if (!value.empty()) {
+                instanceSize = stoi(value);
+                }
                 break;
             case 4:
+                displayMatrix = (value == "1");
+                break;
+            case 5:
                 iterations = stoi(value);
                 break;
                 break;
-            case 5:
+            case 6:
                 algorithm = value;
                 break;
-            case 6:
+            case 7:
                 outputFile = value;
                 break;
-            case 7:
+            case 8:
                 progress = (value == "1");
                 break;
-            case 8:
+            case 9:
                 showResults = (value == "1");
                 break;
         }
-
         lineCount++;
     }
-
     file.close();
 }
 

@@ -22,6 +22,7 @@ public:
 private:
     bool generateData;   // Zmienna przechowujaca informacje czy generowac dane losowe
     string inputFile;  // Zmienna przechowujaca nazwe pliku wejsciowego
+    bool symmetricProblem; // Czy problem jest symetryczny
     int instanceSize;  // Zmienna przechowujaca rozmiar instancji macierzy
     bool displayMatrix;   // Zmienna przechowujaca informacje czy wyswietlac macierz
     int iterations;  // Zmienna przechowujaca liczbe iteracji
