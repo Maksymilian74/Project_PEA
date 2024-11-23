@@ -83,7 +83,7 @@ void Menu::run() {
 
         } else if (algorithm == "BranchAndBoundBestFirstSearch") {
             start = high_resolution_clock::now();
-            //minCost = algorithms.branchAndBoundBestFirstSearch(*matrix, bestPath);
+            minCost = algorithms.branchAndBoundBestFirstSearch(*matrix, bestPath);
             stop = high_resolution_clock::now();
 
         } else {

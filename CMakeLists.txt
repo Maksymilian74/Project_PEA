@@ -20,6 +20,8 @@ add_executable(Projekt_PEA_2
         Structures/Stack.cpp
         Structures/Stack.h
         Structures/Queue.cpp
-        Structures/Queue.h)
+        Structures/Queue.h
+        Structures/PriorityQueue.cpp
+        Structures/PriorityQueue.h)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static")
