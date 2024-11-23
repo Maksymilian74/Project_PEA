@@ -1,3 +1,8 @@
+/*
+ * Klasa Stack odpowiedzialna jest za implementacje stosu,
+ * zapewnia potrzebne operacje.
+ */
+
 #ifndef PROJEKT_PEA_2_STACK_H
 #define PROJEKT_PEA_2_STACK_H
 

@@ -73,7 +73,7 @@ void Menu::run() {
         // Uruchomienie wybranego algorytmu na podstawie parametru algorithm
         if (algorithm == "BranchAndBoundBFS") {
             start = high_resolution_clock::now();
-            //minCost = algorithms.branchAndBoundBFS(*matrix, bestPath);
+            minCost = algorithms.branchAndBoundBFS(*matrix, bestPath);
             stop = high_resolution_clock::now();
 
         } else if (algorithm == "BranchAndBoundDFS") {

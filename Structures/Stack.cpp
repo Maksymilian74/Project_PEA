@@ -1,10 +1,10 @@
 #include "Stack.h"
 #include <stdexcept>
-#include <iostream>
 
 // Implementacja wezla stosu
 Stack::StackNode::StackNode(Node* node) : data(node), next(nullptr) {}
 
+// Destruktor wezla stosu
 Stack::StackNode::~StackNode() {
     data = nullptr;
 }

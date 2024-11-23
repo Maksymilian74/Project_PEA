@@ -1,3 +1,8 @@
+/*
+ * Klasa Node odpowiedzialna jest za implementacje wezla oraz
+ * zapewnienia potrzebnych operacji.
+ */
+
 #ifndef PROJEKT_PEA_2_NODE_H
 #define PROJEKT_PEA_2_NODE_H
 

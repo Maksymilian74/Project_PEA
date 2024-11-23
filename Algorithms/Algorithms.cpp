@@ -1,5 +1,4 @@
 #include "Algorithms.h"
-#include "../Structures/Stack.h"
 #include <limits>
 #include <iostream>
 
@@ -7,6 +6,60 @@ using namespace std;
 
 // Metoda branch and bound BFS
 int Algorithms::branchAndBoundBFS(const Matrix &matrix, vector<int> &bestPath) {
+    int n = matrix.getSize();
+    int minCost = std::numeric_limits<int>::max();
+    bestPath.clear();
+
+    Queue queue;
+
+    Node* root = new Node(n);
+    root->path.push_back(0);
+    root->visited[0] = true;
+    root->bound = calculateBound(matrix, *root);
+    queue.enqueue(root);
+
+    while (!queue.isEmpty()) {
+        Node* currentNode = queue.dequeue();
+
+        if (currentNode->bound < minCost) {
+            if (currentNode->level == n - 1) {
+                int lastCity = currentNode->path.back();
+                int returnCost = matrix.getCost(lastCity, 0);
+                if (returnCost != -1) {
+                    int totalCost = currentNode->cost + returnCost;
+                    if (totalCost < minCost) {
+                        minCost = totalCost;
+                        bestPath = currentNode->path;
+                        bestPath.push_back(0);  // Powrot do miasta startowego
+                    }
+                }
+            } else {
+                for (int i = 0; i < n; ++i) {
+                    if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
+                        Node* child = new Node(n);
+                        child->level = currentNode->level + 1;
+                        child->cost = currentNode->cost + matrix.getCost(currentNode->path.back(), i);
+                        child->path = currentNode->path;
+                        child->path.push_back(i);
+                        std::copy(currentNode->visited, currentNode->visited + n, child->visited);
+                        child->visited[i] = true;
+
+                        child->bound = calculateBound(matrix, *child);
+
+                        if (child->bound < minCost) {
+                            queue.enqueue(child);
+                        } else {
+                            delete child;
+                        }
+                    }
+                }
+            }
+        }
+
+        delete currentNode;
+    }
+
+    return minCost;
 }
 
 // Metoda branch and bound DFS
