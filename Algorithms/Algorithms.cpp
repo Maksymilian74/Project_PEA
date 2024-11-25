@@ -71,7 +71,6 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
 
     Stack stack;
 
-    // Inicjalizacja pierwszego wezla
     Node* root = new Node(n);
     root->path.push_back(0);
     root->visited[0] = true;
@@ -79,7 +78,7 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
     stack.push(root);
     while (!stack.isEmpty()) {
         Node* currentNode = stack.pop();
-        // Jesli osiagnelismy lisc drzewa (pelna trasa)
+        // Jesli osiagnelismy lisc drzewa
         if (currentNode->level == n - 1) {
             int lastCity = currentNode->path.back();
             int returnCost = matrix.getCost(lastCity, 0);
@@ -127,7 +126,6 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
 
     PriorityQueue queue;
 
-    // Inicjalizacja korzenia
     Node* root = new Node(n);
     root->path.push_back(0);
     root->visited[0] = true;
@@ -181,35 +179,34 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
 // Metoda branch and bound BFS dla macierzy symetrycznej
 int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
-    int minCost = std::numeric_limits<int>::max(); // Minimalny koszt znalezionego rozwiązania
-    bestPath.clear(); // Wyczyszczenie ścieżki
+    int minCost = std::numeric_limits<int>::max();
+    bestPath.clear();
 
-    Queue queue; // Własnoręcznie zaimplementowany stos
+    Queue queue;
 
-    // Inicjalizacja pierwszego węzła
     Node* root = new Node(n);
-    root->path.push_back(0); // Startujemy od miasta 0
+    root->path.push_back(0); // Start od miasta 0
     root->visited[0] = true;
     root->bound = SymmetricCalculateBound(matrix, *root); // Wyliczenie dolnej granicy
-    queue.enqueue(root); // Dodanie korzenia do kolejki
+    queue.enqueue(root);
 
     while (!queue.isEmpty()) {
         Node* currentNode = queue.dequeue();
 
-        // Sprawdzenie, czy granica jest lepsza od najlepszego znalezionego rozwiązania
+        // Sprawdzenie, czy granica jest lepsza od najlepszego znalezionego rozwiazania
         if (currentNode->bound < minCost) {
-            if (currentNode->level == n - 1) { // Jeśli osiągnęliśmy ostatni poziom
+            if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0); // Koszt powrotu do miasta startowego
+                int returnCost = matrix.getCost(lastCity, 0);
                 if (returnCost != -1) {
                     int totalCost = currentNode->cost + returnCost;
-                    if (totalCost < minCost) { // Jeśli znaleziono lepsze rozwiązanie
+                    if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiązanie
                         minCost = totalCost;
                         bestPath = currentNode->path;
-                        bestPath.push_back(0); // Dodanie powrotu do miasta startowego
+                        bestPath.push_back(0);
                     }
                 }
-            } else { // Generowanie dzieci
+            } else {
                 for (int i = 0; i < n; ++i) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
@@ -223,17 +220,17 @@ int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector
                         // Wyliczanie dolnej granicy dla dziecka
                         child->bound = SymmetricCalculateBound(matrix, *child);
 
-                        // Dodanie dziecka do kolejki, jeśli jego granica jest lepsza
+                        // Dodanie dziecka do kolejki, jesli jego granica jest lepsza
                         if (child->bound < minCost) {
                             queue.enqueue(child);
                         } else {
-                            delete child; // Jeśli granica jest gorsza, usuwamy węzeł
+                            delete child; // Jesli granica jest gorsza, usuwamy wezel
                         }
                     }
                 }
             }
         }
-        delete currentNode; // Usunięcie przetworzonego węzła
+        delete currentNode;
     }
 
     return minCost;
@@ -242,35 +239,34 @@ int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector
 // Metoda branch and bound DFS dla macierzy symetrycznej
 int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
-    int minCost = std::numeric_limits<int>::max(); // Minimalny koszt znalezionego rozwiązania
-    bestPath.clear(); // Wyczyszczenie ścieżki
+    int minCost = std::numeric_limits<int>::max();
+    bestPath.clear();
 
-    Stack stack; // Własnoręcznie zaimplementowany stos
+    Stack stack;
 
-    // Inicjalizacja pierwszego węzła
     Node* root = new Node(n);
-    root->path.push_back(0); // Startujemy od miasta 0
+    root->path.push_back(0); // Start od miasta 0
     root->visited[0] = true;
     root->bound = SymmetricCalculateBound(matrix, *root); // Wyliczenie dolnej granicy
-    stack.push(root); // Dodanie korzenia do stosu
+    stack.push(root);
 
     while (!stack.isEmpty()) {
         Node* currentNode = stack.pop();
 
-        // Sprawdzenie, czy granica jest lepsza od najlepszego znalezionego rozwiązania
+        // Sprawdzenie, czy granica jest lepsza od najlepszego znalezionego rozwiazania
         if (currentNode->bound < minCost) {
-            if (currentNode->level == n - 1) { // Jeśli osiągnęliśmy ostatni poziom
+            if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0); // Koszt powrotu do miasta startowego
+                int returnCost = matrix.getCost(lastCity, 0);
                 if (returnCost != -1) {
                     int totalCost = currentNode->cost + returnCost;
-                    if (totalCost < minCost) { // Jeśli znaleziono lepsze rozwiązanie
+                    if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiazanie
                         minCost = totalCost;
                         bestPath = currentNode->path;
-                        bestPath.push_back(0); // Dodanie powrotu do miasta startowego
+                        bestPath.push_back(0);
                     }
                 }
-            } else { // Generowanie dzieci
+            } else {
                 for (int i = 0; i < n; ++i) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
@@ -284,17 +280,17 @@ int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector
                         // Wyliczanie dolnej granicy dla dziecka
                         child->bound = SymmetricCalculateBound(matrix, *child);
 
-                        // Dodanie dziecka do stosu, jeśli jego granica jest lepsza
+                        // Dodanie dziecka do stosu, jesli jego granica jest lepsza
                         if (child->bound < minCost) {
                             stack.push(child);
                         } else {
-                            delete child; // Jeśli granica jest gorsza, usuwamy węzeł
+                            delete child; // Jesli granica jest gorsza, usuwamy wezel
                         }
                     }
                 }
             }
         }
-        delete currentNode; // Usunięcie przetworzonego węzła
+        delete currentNode;
     }
 
     return minCost;
@@ -303,39 +299,38 @@ int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector
 // Metoda branch and bound best first search dla macierzy symetrycznej
 int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &matrix, vector<int> &bestPath) {
     int n = matrix.getSize();
-    int minCost = std::numeric_limits<int>::max(); // Minimalny koszt znalezionego rozwiązania
-    bestPath.clear(); // Wyczyszczenie ścieżki
+    int minCost = std::numeric_limits<int>::max();
+    bestPath.clear();
 
-    PriorityQueue queue; // Własnoręcznie zaimplementowana kolejka priorytetowa
+    PriorityQueue queue;
 
-    // Inicjalizacja pierwszego węzła
     Node* root = new Node(n);
-    root->path.push_back(0); // Startujemy od miasta 0
+    root->path.push_back(0); // Start od miasta 0
     root->visited[0] = true;
     root->bound = SymmetricCalculateBound(matrix, *root); // Wyliczenie dolnej granicy
-    queue.enqueue(root); // Dodanie korzenia do kolejki
+    queue.enqueue(root);
 
     while (!queue.isEmpty()) {
         Node* currentNode = queue.dequeue();
 
-        // Jeśli dolna granica węzła jest większa od aktualnego minimalnego kosztu, pomijamy go
+        // Jesli dolna granica wezla jest wieksza od aktualnego minimalnego kosztu, pomijamy go
         if (currentNode->bound >= minCost) {
             delete currentNode;
             continue;
         }
 
-        if (currentNode->level == n - 1) { // Jeśli osiągnęliśmy ostatni poziom
+        if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
             int lastCity = currentNode->path.back();
-            int returnCost = matrix.getCost(lastCity, 0); // Koszt powrotu do miasta startowego
+            int returnCost = matrix.getCost(lastCity, 0);
             if (returnCost != -1) {
                 int totalCost = currentNode->cost + returnCost;
-                if (totalCost < minCost) { // Jeśli znaleziono lepsze rozwiązanie
+                if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiazanie
                     minCost = totalCost;
                     bestPath = currentNode->path;
-                    bestPath.push_back(0); // Dodanie powrotu do miasta startowego
+                    bestPath.push_back(0);
                 }
             }
-        } else { // Generowanie dzieci
+        } else {
             for (int i = 0; i < n; ++i) {
                 if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                     Node* child = new Node(n);
@@ -349,17 +344,17 @@ int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &ma
                     // Wyliczanie dolnej granicy dla dziecka
                     child->bound = SymmetricCalculateBound(matrix, *child);
 
-                    // Dodanie dziecka do kolejki priorytetowej, jeśli jego granica jest lepsza
+                    // Dodanie dziecka do kolejki priorytetowej, jesli jego granica jest lepsza
                     if (child->bound < minCost) {
                         queue.enqueue(child);
                     } else {
-                        delete child; // Jeśli granica jest gorsza, usuwamy węzeł
+                        delete child; // Jesli granica jest gorsza, usuwamy wezel
                     }
                 }
             }
         }
 
-        delete currentNode; // Usunięcie przetworzonego węzła
+        delete currentNode;
     }
 
     return minCost;

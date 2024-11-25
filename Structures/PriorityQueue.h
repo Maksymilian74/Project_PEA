@@ -11,15 +11,15 @@
 class PriorityQueue {
 private:
     struct PriorityQueueNode {
-        Node* data;                   // Dane przechowywane w wezle
-        PriorityQueueNode* next;      // Wskaznik na kolejny wezel
+        Node* data; // Dane przechowywane w wezle
+        PriorityQueueNode* next; // Wskaznik na kolejny wezel
 
         PriorityQueueNode(Node* node);
         ~PriorityQueueNode();
     };
 
-    PriorityQueueNode* head;          // Wskaznik na poczatek kolejki
-    int queueSize;                    // Rozmiar kolejki
+    PriorityQueueNode* head; // Wskaznik na poczatek kolejki
+    int queueSize; // Rozmiar kolejki
 
 public:
     PriorityQueue();
