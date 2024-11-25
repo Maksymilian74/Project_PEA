@@ -29,7 +29,7 @@ void Stack::push(Node* node) {
     StackNode* newNode = new StackNode(node);
     newNode->next = top;
     top = newNode;
-    ++stackSize;
+    stackSize++;
 }
 
 // Usuniecie elementu ze stosu
@@ -41,7 +41,7 @@ Node* Stack::pop() {
     Node* node = temp->data;
     top = top->next;
     delete temp;
-    --stackSize;
+    stackSize--;
     return node;
 }
 

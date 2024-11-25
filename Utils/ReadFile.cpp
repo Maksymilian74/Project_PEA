@@ -32,8 +32,8 @@ void ReadFile::loadDataAsymmetric(const string& filename, Matrix& matrix) {
     file >> size;  // Wczytanie rozmiaru macierzy z pliku
 
     // Wczytanie danych z pliku do macierzy
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             int cost;
             file >> cost;  // Wczytanie kosztu z pliku
             matrix.setCost(i, j, cost);  // Ustawienie kosztu w macierzy
@@ -60,8 +60,8 @@ void ReadFile::loadDataSymmetric(const string& filename, SymmetricMatrix& matrix
     }
 
     // Wczytanie danych z pliku i ustawienie tylko dolnej polowy macierzy
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             int cost;
             file >> cost;  // Wczytanie kosztu z pliku
             if (i > j) {  // Ustawiamy tylko dla dolnej polowy macierzy

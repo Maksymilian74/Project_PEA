@@ -34,7 +34,7 @@ void Menu::run() {
     srand(time(nullptr));  // Inicjalizacja generatora liczb losowych
 
     Matrix* asymmetricMatrix = nullptr;  // Wskaznik do dynamicznie alokowanej macierzy asymetrycznej
-    SymmetricMatrix* symmetricMatrix = nullptr; // Wskaznik do macierzy symetrycznej
+    SymmetricMatrix* symmetricMatrix = nullptr; // Wskaznik do dynamicznie alokowanej macierzy symetrycznej
 
     if (!generateData) {
         ReadFile fileReader;
@@ -67,7 +67,7 @@ void Menu::run() {
     Algorithms algorithms;  // Tworzenie obiektu klasy z algorytmami
 
     timer = 0;
-    for (int i = 0; i < iterations; ++i) {
+    for (int i = 0; i < iterations; i++) {
 
         // Wypelnienie macierzy losowymi danymi dla kazdej iteracji
         if (generateData) {

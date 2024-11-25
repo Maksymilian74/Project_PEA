@@ -3,9 +3,9 @@
 # Generowanie danych losowych (0 - nie, 1 - tak)
 generate_data=0
 # Nazwa pliku wejsciowego
-input_file=matrix_11x11.atsp
+input_file=matrix_8x8.atsp
 # Czy problem jest symetryczny (0 - nie, 1 - tak)
-symmetric_problem=1
+symmetric_problem=0
 # Rozmiar instancji
 instance_size=10
 # Czy wyswietlic macierz (0 - nie, 1 - tak)

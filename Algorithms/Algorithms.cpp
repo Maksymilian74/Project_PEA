@@ -25,9 +25,9 @@ int Algorithms::AsymmetricBranchAndBoundBFS(const Matrix &matrix, vector<int> &b
         if (currentNode->bound < minCost) {
             if (currentNode->level == n - 1) {
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0);
-                if (returnCost != -1) {
-                    int totalCost = currentNode->cost + returnCost;
+                int cost = matrix.getCost(lastCity, 0);
+                if (cost != -1) {
+                    int totalCost = currentNode->cost + cost;
                     if (totalCost < minCost) {
                         minCost = totalCost;
                         bestPath = currentNode->path;
@@ -35,7 +35,7 @@ int Algorithms::AsymmetricBranchAndBoundBFS(const Matrix &matrix, vector<int> &b
                     }
                 }
             } else {
-                for (int i = 0; i < n; ++i) {
+                for (int i = 0; i < n; i++) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
                         child->level = currentNode->level + 1;
@@ -81,9 +81,9 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
         // Jesli osiagnelismy lisc drzewa
         if (currentNode->level == n - 1) {
             int lastCity = currentNode->path.back();
-            int returnCost = matrix.getCost(lastCity, 0);
-            if (returnCost != -1) {
-                int totalCost = currentNode->cost + returnCost;
+            int cost = matrix.getCost(lastCity, 0);
+            if (cost != -1) {
+                int totalCost = currentNode->cost + cost;
                 if (totalCost < minCost) {
                     minCost = totalCost;
                     bestPath = currentNode->path;
@@ -91,7 +91,7 @@ int Algorithms::AsymmetricBranchAndBoundDFS(const Matrix &matrix, vector<int> &b
                 }
             }
         } else {
-            for (int i = 0; i < n; ++i) {
+            for (int i = 0; i < n; i++) {
                 if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                     Node* child = new Node(n);
                     child->level = currentNode->level + 1;
@@ -138,9 +138,9 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
         if (currentNode->bound < minCost) {
             if (currentNode->level == n - 1) {
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0);
-                if (returnCost != -1) {
-                    int totalCost = currentNode->cost + returnCost;
+                int cost = matrix.getCost(lastCity, 0);
+                if (cost != -1) {
+                    int totalCost = currentNode->cost + cost;
                     if (totalCost < minCost) {
                         minCost = totalCost;
                         bestPath = currentNode->path;
@@ -148,7 +148,7 @@ int Algorithms::AsymmetricBranchAndBoundBestFirstSearch(const Matrix &matrix, ve
                     }
                 }
             } else {
-                for (int i = 0; i < n; ++i) {
+                for (int i = 0; i < n; i++) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
                         child->level = currentNode->level + 1;
@@ -197,9 +197,9 @@ int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector
         if (currentNode->bound < minCost) {
             if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0);
-                if (returnCost != -1) {
-                    int totalCost = currentNode->cost + returnCost;
+                int cost = matrix.getCost(lastCity, 0);
+                if (cost != -1) {
+                    int totalCost = currentNode->cost + cost;
                     if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiązanie
                         minCost = totalCost;
                         bestPath = currentNode->path;
@@ -207,7 +207,7 @@ int Algorithms::SymmetricBranchAndBoundBFS(const SymmetricMatrix &matrix, vector
                     }
                 }
             } else {
-                for (int i = 0; i < n; ++i) {
+                for (int i = 0; i < n; i++) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
                         child->level = currentNode->level + 1;
@@ -257,9 +257,9 @@ int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector
         if (currentNode->bound < minCost) {
             if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
                 int lastCity = currentNode->path.back();
-                int returnCost = matrix.getCost(lastCity, 0);
-                if (returnCost != -1) {
-                    int totalCost = currentNode->cost + returnCost;
+                int cost = matrix.getCost(lastCity, 0);
+                if (cost != -1) {
+                    int totalCost = currentNode->cost + cost;
                     if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiazanie
                         minCost = totalCost;
                         bestPath = currentNode->path;
@@ -267,7 +267,7 @@ int Algorithms::SymmetricBranchAndBoundDFS(const SymmetricMatrix &matrix, vector
                     }
                 }
             } else {
-                for (int i = 0; i < n; ++i) {
+                for (int i = 0; i < n; i++) {
                     if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                         Node* child = new Node(n);
                         child->level = currentNode->level + 1;
@@ -305,9 +305,9 @@ int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &ma
     PriorityQueue queue;
 
     Node* root = new Node(n);
-    root->path.push_back(0); // Start od miasta 0
+    root->path.push_back(0);
     root->visited[0] = true;
-    root->bound = SymmetricCalculateBound(matrix, *root); // Wyliczenie dolnej granicy
+    root->bound = SymmetricCalculateBound(matrix, *root);
     queue.enqueue(root);
 
     while (!queue.isEmpty()) {
@@ -321,9 +321,9 @@ int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &ma
 
         if (currentNode->level == n - 1) { // Jesli osiagnelismy ostatni poziom
             int lastCity = currentNode->path.back();
-            int returnCost = matrix.getCost(lastCity, 0);
-            if (returnCost != -1) {
-                int totalCost = currentNode->cost + returnCost;
+            int cost = matrix.getCost(lastCity, 0);
+            if (cost != -1) {
+                int totalCost = currentNode->cost + cost;
                 if (totalCost < minCost) { // Jesli znaleziono lepsze rozwiazanie
                     minCost = totalCost;
                     bestPath = currentNode->path;
@@ -331,7 +331,7 @@ int Algorithms::SymmetricBranchAndBoundBestFirstSearch(const SymmetricMatrix &ma
                 }
             }
         } else {
-            for (int i = 0; i < n; ++i) {
+            for (int i = 0; i < n; i++) {
                 if (!currentNode->visited[i] && matrix.getCost(currentNode->path.back(), i) != -1) {
                     Node* child = new Node(n);
                     child->level = currentNode->level + 1;
@@ -366,11 +366,11 @@ int Algorithms::AsymmetricCalculateBound(const Matrix& matrix, const Node& node)
     int lowerBound = node.cost;
 
     // Dodawanie minimalnych kosztow z niewykorzystanych krawedzi
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         if (!node.visited[i]) {
-            int minCost1 = numeric_limits<int>::max(); // Najtansza krawedz wychodzaca
-            int minCost2 = numeric_limits<int>::max(); // Najtansza krawedz przychodzaca
-            for (int j = 0; j < n; ++j) {
+            int minCost1 = numeric_limits<int>::max(); // Najtansza krawedz
+            int minCost2 = numeric_limits<int>::max(); // Druga najtansza krawedz
+            for (int j = 0; j < n; j++) {
                 if (i != j) {
                     int cost = matrix.getCost(i, j);
                     if (!node.visited[j] && cost != -1) {
@@ -396,10 +396,10 @@ int Algorithms::SymmetricCalculateBound(const SymmetricMatrix& matrix, const Nod
     int n = matrix.getSize();
     int lowerBound = node.cost;
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         if (!node.visited[i]) {
             int minCost = std::numeric_limits<int>::max();
-            for (int j = 0; j < n; ++j) {
+            for (int j = 0; j < n; j++) {
                 if (i != j && !node.visited[j]) {
                     int cost = matrix.getCost(i, j);
                     if (cost < minCost) {

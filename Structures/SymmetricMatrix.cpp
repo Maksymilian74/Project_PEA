@@ -14,7 +14,7 @@ SymmetricMatrix::SymmetricMatrix(int size) : size(size) {
     costs = new int[size * (size - 1) / 2];
 
     // Inicjalizacja kosztow na -1
-    for (int i = 0; i < size * (size - 1) / 2; ++i) {
+    for (int i = 0; i < size * (size - 1) / 2; i++) {
         costs[i] = -1;
     }
 }
@@ -45,8 +45,8 @@ void SymmetricMatrix::setCost(int i, int j, int value) {
 
 // Metoda wyswietlajaca tablice
 void SymmetricMatrix::display() const {
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             if (i == j) {
                 cout << setw(5) << -1;
             } else {

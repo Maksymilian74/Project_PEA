@@ -6,9 +6,9 @@ using namespace std;
 Matrix::Matrix(int n) : size(n) {
     // Alokacja pamieci dla macierzy
     matrix = new int*[size];
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < size; i++) {
         matrix[i] = new int[size];
-        for (int j = 0; j < size; ++j) {
+        for (int j = 0; j < size; j++) {
             matrix[i][j] = -1; // Domyslna wartosc dla macierzy kosztow
         }
     }
@@ -16,7 +16,7 @@ Matrix::Matrix(int n) : size(n) {
 
 // Destruktor
 Matrix::~Matrix() {
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < size; i++) {
         delete[] matrix[i];
     }
     delete[] matrix;
@@ -24,8 +24,8 @@ Matrix::~Matrix() {
 
 // Metoda odpowiedzialna za wyswietlenie macierzy
 void Matrix::display() const {
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
             if (matrix[i][j] == -1) {
                 cout << " -1 ";
             } else {

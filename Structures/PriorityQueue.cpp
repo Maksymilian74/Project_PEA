@@ -43,7 +43,7 @@ void PriorityQueue::enqueue(Node* node) {
         current->next = newNode;
     }
 
-    ++queueSize;
+    queueSize++;
 }
 
 // Metoda usuwajaca element o najnizszym koszcie
@@ -55,7 +55,7 @@ Node* PriorityQueue::dequeue() {
     Node* node = temp->data;
     head = head->next;
     delete temp;
-    --queueSize;
+    queueSize--;
     return node;
 }
 

@@ -34,7 +34,7 @@ void Queue::enqueue(Node* node) {
     if (!front) {
         front = rear;
     }
-    ++queueSize;
+    queueSize++;
 }
 
 // Metoda odpowiedzialna za usuniecie wezla z kolejki
@@ -49,7 +49,7 @@ Node* Queue::dequeue() {
         rear = nullptr;
     }
     delete temp;
-    --queueSize;
+    queueSize--;
     return node;
 }
 
