@@ -159,10 +159,10 @@ void Menu::run() {
     cout << endl << "Algorytm " << algorithm;
 
     if (symmetricProblem) {
-        cout << " (Symmetric)";
+        cout << " dla problemu symetrycznego";
         cout << ", dla macierzy o rozmiarze: " << symmetricMatrix->getSize();
     } else {
-        cout << " (Asymmetric)";
+        cout << " dla problemu asymetrycznego";
         cout << ", dla macierzy o rozmiarze: " << asymmetricMatrix->getSize();
     }
     cout << ", sredni czas: " << timer / iterations << " ms" << endl;
