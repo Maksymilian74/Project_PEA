@@ -129,6 +129,12 @@ void Menu::run() {
                 return;
             }
         }
+        // Zapis pojedynczych wynikow do pliku CSV
+        if (symmetricProblem) {
+            saveResultsToCSV(algorithm + "_Symmetric", symmetricMatrix->getSize(), duration_cast<duration<double, milli>>(stop - start).count());
+        } else {
+            saveResultsToCSV(algorithm + "_Asymmetric", asymmetricMatrix->getSize(), duration_cast<duration<double, milli>>(stop - start).count());
+        }
 
         timer += duration_cast<duration<double, milli>>(stop - start).count();
 
@@ -139,7 +145,7 @@ void Menu::run() {
             for (int city: bestPath) {
                 cout << city << " ";
             }
-            cout << endl << endl << endl;
+            cout << endl << endl;
         }
 
         // Wyswietlenie wskaznika postepu
@@ -149,11 +155,11 @@ void Menu::run() {
         }
     }
 
-    // Zapis wynikow do pliku CSV
+    // Zapis wynikow srednich do pliku CSV
     if (symmetricProblem) {
         saveResultsToCSV(algorithm + "_Symmetric", symmetricMatrix->getSize(), timer / iterations);
     } else {
-        saveResultsToCSV(algorithm + "_Asymmetric", asymmetricMatrix->getSize(), timer / iterations);
+        saveResultsToCSV("Czas sredni: " + algorithm + "_Asymmetric", asymmetricMatrix->getSize(), timer / iterations);
     }
 
     cout << endl << "Algorytm " << algorithm;
