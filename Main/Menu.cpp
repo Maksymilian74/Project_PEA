@@ -8,9 +8,6 @@
 #include <fstream>
 #include <vector>
 #include <chrono>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <psapi.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -28,8 +25,6 @@ Menu::Menu() {
     progress = false;
     showResults = 0;
     timer = 0;
-    totalMemoryUsed = 0;
-    memoryUsed = 0;
 }
 
 // Glowna metoda odpowiedzialna za wykonanie programu na podstawie wczytanej konfiguracji
@@ -42,7 +37,7 @@ void Menu::run() {
     SymmetricMatrix* symmetricMatrix = nullptr; // Wskaznik do dynamicznie alokowanej macierzy symetrycznej
 
     if (!generateData) {
-        class ReadFile fileReader;
+        ReadFile fileReader;
         int fileMatrixSize;
         try {
             // Wczytywanie rozmiaru macierzy z pliku
@@ -72,7 +67,6 @@ void Menu::run() {
     Algorithms algorithms;  // Tworzenie obiektu klasy z algorytmami
 
     timer = 0;
-    totalMemoryUsed = 0;
 
     for (int i = 0; i < iterations; i++) {
 
@@ -137,21 +131,17 @@ void Menu::run() {
             }
         }
 
-        memoryUsed = getCurrentMemoryUsage();
-        totalMemoryUsed += memoryUsed;
-
         // Zapis pojedynczych wynikow do pliku CSV
         if (symmetricProblem) {
-            saveResultsToCSV(algorithm + "_Symmetric", symmetricMatrix->getSize(), memoryUsed, duration_cast<duration<double, milli>>(stop - start).count());
+            saveResultsToCSV(algorithm + "_Symmetric", symmetricMatrix->getSize(), duration_cast<duration<double, milli>>(stop - start).count());
         } else {
-            saveResultsToCSV(algorithm + "_Asymmetric", asymmetricMatrix->getSize(), memoryUsed, duration_cast<duration<double, milli>>(stop - start).count());
+            saveResultsToCSV(algorithm + "_Asymmetric", asymmetricMatrix->getSize(), duration_cast<duration<double, milli>>(stop - start).count());
         }
 
         timer += duration_cast<duration<double, milli>>(stop - start).count();
 
         if (showResults) {
             // Wyswietlenie wynikow
-            cout << "Zuzyta pamiec: " << memoryUsed / 1024 << " kB" << endl;
             cout << "Minimalny koszt trasy: " << minCost << endl;
             cout << "Najlepsza trasa: ";
             for (int city: bestPath) {
@@ -167,14 +157,11 @@ void Menu::run() {
         }
     }
 
-    // Zapis sredniego zuzycia pamieci
-    double averageMemory = totalMemoryUsed / iterations;
-
     // Zapis wynikow srednich do pliku CSV
     if (symmetricProblem) {
-        saveResultsToCSV("Czas sredni: " + algorithm + "_Symmetric", symmetricMatrix->getSize(), averageMemory, timer / iterations);
+        saveResultsToCSV("Czas sredni: " + algorithm + "_Symmetric", symmetricMatrix->getSize(), timer / iterations);
     } else {
-        saveResultsToCSV("Czas sredni: " + algorithm + "_Asymmetric", asymmetricMatrix->getSize(), averageMemory, timer / iterations);
+        saveResultsToCSV("Czas sredni: " + algorithm + "_Asymmetric", asymmetricMatrix->getSize(), timer / iterations);
     }
 
     cout << endl << "Algorytm " << algorithm;
@@ -263,24 +250,15 @@ string Menu::extractValue(const string& line) {
     return "";
 }
 
-// Funkcja zwracająca biezace zuzycie pamieci przez proces (w bajtach)
-size_t Menu::getCurrentMemoryUsage() {
-    PROCESS_MEMORY_COUNTERS pmc;
-    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-        return pmc.WorkingSetSize; // Biezace zuzycie pamieci (w bajtach)
-    }
-    return 0;
-}
-
 // Metoda odpowiedzialna za zapis wyników do pliku CSV
-void Menu::saveResultsToCSV(const string& algorithm, int size, size_t memoryUsed, double time) {
+void Menu::saveResultsToCSV(const string& algorithm, int size, double time) {
     ofstream file(outputFile, ios::app);  // Otwieranie pliku w trybie dopisywania
     if (!file.is_open()) {
         cerr << "Blad: Nie mozna otworzyc pliku wyjsciowego: " << outputFile << endl;
         return;
     }
 
-    file << algorithm << "," << size << "," << memoryUsed / 1024.0 << "," << time << "\n";
+    file << algorithm << "," << size << "," << time << "\n";
 
     file.close();
 }

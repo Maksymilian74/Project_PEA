@@ -32,12 +32,9 @@ private:
     bool showResults;  // Zmienna przechowujaca informacje czy wyswietlac wyniki dzialania algorytmu
     high_resolution_clock::time_point start, stop;  // Zmienne do przechowywania punktow czasowych do mierzenia czasu wykonania
     double timer;  // Zmienna przechowujaca zmierzony czas wykonania algorytmu
-    size_t totalMemoryUsed;  // Zmienna przechowujaca zuzyta pamiec
-    size_t memoryUsed;  // Zmienna przechowujaca zuzyta pamiec dla danej iteracji
 
-    size_t getCurrentMemoryUsage(); // Funkcja zwracająca biezace zuzycie pamieci przez proces (w bajtach)
     string extractValue(const string& line); // Pomocnicza metoda do wyciagania wartosci po "="
-    void saveResultsToCSV(const string& algorithm, int size, size_t memoryUsed, double time);  // Pomocnicza metoda odpowiedzialna za zapis pomiarow do pliku
+    void saveResultsToCSV(const string& algorithm, int size, double time);  // Pomocnicza metoda odpowiedzialna za zapis pomiarow do pliku
 };
 
 #endif
